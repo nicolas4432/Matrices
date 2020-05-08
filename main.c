@@ -107,6 +107,7 @@ SopaDeLetras leerSopaDeArchivo()
 			posCaracter++;
 		}
 	}
+	sopa.SOPA[posCaracter] = '\0';
 
 	fclose(sopaPtr);												//Cierre de archivo
 
@@ -210,8 +211,63 @@ char* palabrasBuscar(Palabras palabras, int PalabraNumero) {
 	return combinaciones;
 }
 
+int numeroCombinaciones(char* Combinaciones) {
+	int cantidad = 0;
+	int i = 0;
+	while (Combinaciones[i] != '\0') {
+		if (Combinaciones[i] == '-')
+		{
+			cantidad++;
+		}
+		i++;
+	}
+	return cantidad;
+}
+
+char* palabra(char* Combinaciones, int NumeroBuscada) {
+	char* palabraI = malloc(25 * sizeof(char*));
+	char* palabraF = malloc(25 * sizeof(char*));
+	int contador = 0;
+	int i = 0;
+	if (NumeroBuscada == 0){
+		while(Combinaciones[contador] != '-') {
+			palabraI[contador] = Combinaciones[contador];
+			contador++;
+		}
+		palabraI[contador] = '\0';
+		contador = 0;
+	}
+	else {
+		while (contador != NumeroBuscada) {
+			if (Combinaciones[i] == '-') {
+				contador++;
+			}
+			i++;
+		}
+		contador = 0;
+		while (Combinaciones[i] != '-') {
+			palabraI[contador] = Combinaciones[i];
+			contador++;
+			i++;
+		}
+		palabraI[contador] = '\0';
+	}
+
+	return palabraI;
+}
+
+
 void busquedaPalabras(SopaDeLetras sopa, Palabras palabras) {
 	int numeroPalabras = palabras.num;
+	char* combinaciones;
+	int cantidadCombinaciones;
+	char* palabraBuscada;
+
+	char* encontrada;
+	int posicion;
+
+//ret = strstr(sopa.SOPA, "hoja");
+
 
 	//strcpy(var, "")
 
@@ -219,7 +275,17 @@ void busquedaPalabras(SopaDeLetras sopa, Palabras palabras) {
 
 
 	for (int k = 0; k < numeroPalabras; k++) {
-
+		combinaciones = palabrasBuscar(palabras, k);
+		cantidadCombinaciones = numeroCombinaciones(combinaciones);
+		for (int i = 0; i < cantidadCombinaciones; i++)
+		{
+			palabraBuscada = palabra(combinaciones, i);
+			if (strstr(sopa.SOPA, palabraBuscada) != NULL) {
+				encontrada = strstr(sopa.SOPA, palabraBuscada);
+				posicion = strlen(sopa.SOPA) - strlen(encontrada);
+				i = cantidadCombinaciones;
+			}
+		}
 	}
 }
 
@@ -251,13 +317,13 @@ void main()
 		printf("Archivo leido con exito.\n\n");
 
 
-
-
-
-
-
-	char * combina = palabrasBuscar(palabras, 1);
+	char* combina = palabrasBuscar(palabras, 1);
 	printf("%s", combina);
+	busquedaPalabras(sopa, palabras);
+
+
+	//char * combina = palabrasBuscar(palabras, 1);
+	//printf("%s", combina);
 
 	//char* ret;
 
