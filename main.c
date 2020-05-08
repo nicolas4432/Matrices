@@ -165,69 +165,61 @@ Palabras leerPalabrasDeArchivo()
 	return palabras;
 }
 
-void busquedaPalabras(SopaDeLetras sopa, Palabras palabras) {
-	int tamanioMatriz = sopa.tam;
-	int numeroPalabras = palabras.num;
-	int letra = 0;
+char* palabrasBuscar(Palabras palabras, int PalabraNumero) {
+	int tamanio = 0;
+	int tamanioChar = 0;
+	char* combinaciones = malloc(4000 * sizeof(char*));
+	char* palabraI = malloc(25 * sizeof(char*));
+	char* palabraF = malloc(25 * sizeof(char*));
+	char* palabraFF = malloc(25 * sizeof(char*));
 	int largo = 0;
-	char* palabraEncontrada = malloc(palabras.num * 25 * sizeof(char*));
-	int pos = 0;
-	int ultimoLargoEncon = 0;
-	int posEncontrada;
-	int tamanioPalabra = 5; // funcion tamaño palabra
-	int pasada = 0;
-	//strcpy(var, "")
+	int letrasMenos = 1;
+	while (palabras.palabras[25 * PalabraNumero + tamanio] != 'Í') {
+		palabraI[tamanio] = palabras.palabras[25 * PalabraNumero + tamanio];
+		palabraF[tamanio] = palabras.palabras[25 * PalabraNumero + tamanio];
+		palabraFF[tamanio] = palabras.palabras[25 * PalabraNumero + tamanio];
+		tamanio++;
+		largo = tamanio;
+	}
+	for (int i = 0; i < largo; i++)
+	{
+		combinaciones[i] = palabraI[i];
+		if (i == largo - 1) {
+			combinaciones[i + 1] = '\0';
+		}
+	}
+	if (tamanio%2 == 1){
+		tamanio++;
+	}
+	for (int i = 0; i < tamanio/2 ; i++) {
+		for (int k = 0; k < letrasMenos + 1; k++) {
+			strcpy(palabraF, "                          ");
+			strcat(combinaciones, "-");
 
-	for (int k = 0; k < numeroPalabras; k++) {
-		//while (palabras.palabras[letra] != '\0') {
-			for (int i = 0; i < tamanioMatriz; i++) {
-				for (int j = 0; j < tamanioMatriz; j++) {
-					if (palabras.palabras[letra] == sopa.SOPA[i * tamanioMatriz + j]) {
- 						pos = 0;
-						while (palabras.palabras[letra] == sopa.SOPA[i * tamanioMatriz + j]) {
-							palabraEncontrada[pos] = palabras.palabras[letra];
-							largo++;
-							letra++;
-							
-							if (pos == 0)
-							{
-								posEncontrada = i * tamanioMatriz + j;
-							}
-							pos++;
-							j++;
-						
-						}
-						j--;
-						if (largo == tamanioPalabra) { // si el largo de la ultima palabra es igual la largo de la palabra se pasa a la siguiente palabra
-							// funcion agregar palabra y pasar a la siguiente
-							largo = 0;
-							j = 10;
-							i = 11;
-						}
-						else if (largo > ultimoLargoEncon) {
-							// funcion agregar palabra
-							ultimoLargoEncon = largo;
-							largo = 0;
-						}
+			for (int j = 0; j < largo - letrasMenos; j++) {
+				palabraF[j] = palabraI[j + k];
 
-						letra = k * 25 + pasada;
-					}
-
-				}
-				if (tamanioPalabra > ultimoLargoEncon && tamanioPalabra > pasada && ultimoLargoEncon != 0 && i == 9)
-				{
-					i = -1;
-					pasada++;
-					letra = k * 25 + pasada;
-					ultimoLargoEncon = 0;
+				if (j == largo - letrasMenos - 1) {
+					palabraF[j + 1] = '\0';
 				}
 			}
+			strcat(combinaciones, palabraF);
+		}
+		letrasMenos++;
+	}
+	return combinaciones;
+}
 
-		//}
-		letra = (k + 1) * 25;  //paso a la siguiente palabra
-		pasada = 0;
-		ultimoLargoEncon = 0;
-		//tamanioPalabra = tamaño siguiente palabra
+void busquedaPalabras(SopaDeLetras sopa, Palabras palabras) {
+	int numeroPalabras = palabras.num;
+
+	//strcpy(var, "")
+
+
+
+
+	for (int k = 0; k < numeroPalabras; k++) {
+
 	}
 }
 
@@ -264,10 +256,14 @@ void main()
 
 
 
+	char * combina = palabrasBuscar(palabras, 1);
+	printf("%s", combina);
 
-	busquedaPalabras(sopa, palabras);
+	//char* ret;
 
+	//ret = strstr(sopa.SOPA, "hoja");
 
+	//printf("%s", ret);
 
 
 
