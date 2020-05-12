@@ -1,4 +1,11 @@
 #include <stdio.h>
+#include <string.h>
+#include <malloc.h>
+
+
+char palabrasE[100][100];
+int cordenadas[500];
+
 
 typedef struct {
 	char* SOPA;		//La Sopa
@@ -79,7 +86,7 @@ SopaDeLetras leerSopaDeArchivo()
 			caracter;												//Iterador de caracter leido
 	int		posCaracter = 0;										//Iterador para la posición de la matriz a guardar
 	SopaDeLetras sopa;												//Estructura donde se guardara la Sopa
-	FILE* sopaPtr = fopen("sopa.in", "r");							//Abrimos el archivo sopa.in con un Puntero FILE*
+	FILE* sopaPtr = fopen("sopa1.in", "r");							//Abrimos el archivo sopa.in con un Puntero FILE*
 
 	if (sopaPtr == NULL) {											//El archivo se pudo leer?
 		printf("Problema al leer archivo.");
@@ -121,7 +128,7 @@ Palabras leerPalabrasDeArchivo()
 		caracter;												//Iterador de caracter leido
 	int		posCaracter = 0;										//Iterador para la posición de la matriz a guardar
 	Palabras palabras;												//Estructura donde se guardara la Sopa
-	FILE* palabrasPtr = fopen("palabras.in", "r");							//Abrimos el archivo sopa.in con un Puntero FILE*
+	FILE* palabrasPtr = fopen("palabras1.in", "r");							//Abrimos el archivo sopa.in con un Puntero FILE*
 
 	if (palabrasPtr == NULL) {											//El archivo se pudo leer?
 		printf("Problema al leer archivo.");
@@ -172,13 +179,11 @@ char* palabrasBuscar(Palabras palabras, int PalabraNumero) {
 	char* combinaciones = malloc(4000 * sizeof(char*));
 	char* palabraI = malloc(25 * sizeof(char*));
 	char* palabraF = malloc(25 * sizeof(char*));
-	char* palabraFF = malloc(25 * sizeof(char*));
 	int largo = 0;
 	int letrasMenos = 1;
-	while (palabras.palabras[25 * PalabraNumero + tamanio] != 'Í') {
+	while (palabras.palabras[25 * PalabraNumero + tamanio] != 'Í') { // \0
 		palabraI[tamanio] = palabras.palabras[25 * PalabraNumero + tamanio];
 		palabraF[tamanio] = palabras.palabras[25 * PalabraNumero + tamanio];
-		palabraFF[tamanio] = palabras.palabras[25 * PalabraNumero + tamanio];
 		tamanio++;
 		largo = tamanio;
 	}
@@ -256,8 +261,18 @@ char* palabra(char* Combinaciones, int NumeroBuscada) {
 	return palabraI;
 }
 
+void guardarDato(int fila, int columna, char* palabra, int numeroPalabra) {
+	int contador = 0;
+	while (palabra[contador] != '\0')
+	{
+		palabrasE[numeroPalabra][contador] = palabra[contador];
+		contador++;
+	}
+	cordenadas[2 * numeroPalabra] = fila;
+	cordenadas[2 * numeroPalabra + 1] = columna;
+}
 
-void busquedaPalabras(SopaDeLetras sopa, Palabras palabras) {
+void busquedaPalabras(char* matrizNormal, char * matrizTranspuesta, char* matrizVolteadaNormal, char* matrizVolteadaTranspuesta, int TamanioMatriz ,Palabras palabras) {
 	int numeroPalabras = palabras.num;
 	char* combinaciones;
 	int cantidadCombinaciones;
@@ -265,14 +280,15 @@ void busquedaPalabras(SopaDeLetras sopa, Palabras palabras) {
 
 	char* encontrada;
 	int posicion;
+	char* encontrada2;
+	int posicion2;
+	char* encontrada3;
+	int posicion3;
+	char* encontrada4;
+	int posicion4;
 
-//ret = strstr(sopa.SOPA, "hoja");
-
-
-	//strcpy(var, "")
-
-
-
+	int columna;
+	int fila;
 
 	for (int k = 0; k < numeroPalabras; k++) {
 		combinaciones = palabrasBuscar(palabras, k);
@@ -280,19 +296,56 @@ void busquedaPalabras(SopaDeLetras sopa, Palabras palabras) {
 		for (int i = 0; i < cantidadCombinaciones; i++)
 		{
 			palabraBuscada = palabra(combinaciones, i);
-			if (strstr(sopa.SOPA, palabraBuscada) != NULL) {
-				encontrada = strstr(sopa.SOPA, palabraBuscada);
-				posicion = strlen(sopa.SOPA) - strlen(encontrada);
-				i = cantidadCombinaciones;
+			if (strstr(matrizNormal, palabraBuscada) != NULL) {
+				encontrada = strstr(matrizNormal, palabraBuscada);
+				posicion = strlen(matrizNormal) - strlen(encontrada);
+
+				fila = posicion / TamanioMatriz;
+				columna = (posicion % TamanioMatriz) / 1;
+				printf("poscicion:%d fila:%d columna:%d palabra:%s\n", posicion, fila, columna, palabraBuscada);
+				guardarDato(fila, columna, palabraBuscada, k);
+				break;
+			}
+			else if (strstr(matrizTranspuesta, palabraBuscada) != NULL) {
+				encontrada2 = strstr(matrizTranspuesta, palabraBuscada);
+				posicion2 = strlen(matrizTranspuesta) - strlen(encontrada2);
+
+				columna = posicion2 / TamanioMatriz;
+				fila = (posicion2 % TamanioMatriz) / 1;
+				printf("poscicion:%d fila:%d columna:%d palabra:%s\n", posicion2, fila, columna, palabraBuscada);
+				guardarDato(fila, columna, palabraBuscada, k);
+				break;
+			}
+			else if (strstr(matrizVolteadaNormal, palabraBuscada) != NULL) {
+				encontrada3 = strstr(matrizVolteadaNormal, palabraBuscada);
+				posicion3 = strlen(matrizVolteadaNormal) - strlen(encontrada3);
+
+				fila = posicion3 / TamanioMatriz;
+				columna = (posicion3 % TamanioMatriz) / 1;
+				columna = TamanioMatriz - columna - 1;
+				printf("poscicion:%d fila:%d columna:%d palabra:%s\n", posicion3, fila, columna, palabraBuscada);
+				guardarDato(fila, columna, palabraBuscada, k);
+				break;
+
+			}
+			else if (strstr(matrizVolteadaTranspuesta, palabraBuscada) != NULL) {
+				encontrada4 = strstr(matrizVolteadaTranspuesta, palabraBuscada);
+				posicion4 = strlen(matrizVolteadaTranspuesta) - strlen(encontrada4);
+
+				columna = posicion4 / TamanioMatriz;
+				fila = (posicion4 % TamanioMatriz) / 1;
+				columna = TamanioMatriz - columna - 1;
+				printf("poscicion:%d fila:%d columna:%d palabra:%s\n", posicion4, fila, columna, palabraBuscada);
+				guardarDato(fila, columna, palabraBuscada, k);
+				break;
 			}
 		}
 	}
 }
 
-
 void main()
 {
-	/*------------------Se lee la matriz----------------------*/
+	/*------------------Se lee la matriz Normal----------------------*/
 	printf("Leyendo sopa.in...\n\n");
 	SopaDeLetras sopa = leerSopaDeArchivo();
 	if (sopa.SOPA == NULL) {
@@ -301,9 +354,11 @@ void main()
 	}
 	else
 		printf("Archivo leido con exito.\n\n");
+	
+
 	/*------------------Se imprime la matriz------------------*/
 	printf("Matriz (%dx%d): \n\n", sopa.tam, sopa.tam);
-	ImprimirMatriz(sopa.SOPA, sopa.tam, sopa.tam, 0);
+	//ImprimirMatriz(sopa.SOPA, sopa.tam, sopa.tam, 0);
 
 
 	/*------------------Se leen las palabras----------------------*/
@@ -317,35 +372,23 @@ void main()
 		printf("Archivo leido con exito.\n\n");
 
 
-	char* combina = palabrasBuscar(palabras, 1);
-	printf("%s", combina);
-	busquedaPalabras(sopa, palabras);
-
-
-	//char * combina = palabrasBuscar(palabras, 1);
-	//printf("%s", combina);
-
-	//char* ret;
-
-	//ret = strstr(sopa.SOPA, "hoja");
-
-	//printf("%s", ret);
-
-
-
-
-
-	/*------------------Se imprime la matriz------------------*/
+/*------------------Se imprime la matriz Transpuesta------------------*/
 	printf("\n\nMatriz Transpuesta: \n\n");
-	ImprimirMatriz(transponer(sopa.SOPA, sopa.tam, sopa.tam), sopa.tam, sopa.tam, 0);					//Se invierte el numero de filas y columnas
+	//ImprimirMatriz(transponer(sopa.SOPA, sopa.tam, sopa.tam), sopa.tam, sopa.tam, 0);					//Se invierte el numero de filas y columnas
 
+
+/*------------------Se imprime la matriz Volteada------------------*/
 	printf("\n\nMatriz Volteada: \n\n");
-	ImprimirMatriz(voltear(sopa.SOPA, sopa.tam, sopa.tam), sopa.tam, sopa.tam, 0);					//Se invierte el numero de filas y columnas
+	//ImprimirMatriz(voltear(sopa.SOPA, sopa.tam, sopa.tam), sopa.tam, sopa.tam, 0);					//Se invierte el numero de filas y columnas
 
+
+/*------------------Se imprime la matriz Volteada Transpuesta------------------*/
 	printf("\n\nMatriz Transpuesta Volteada: \n\n");
-	ImprimirMatriz(voltear(transponer(sopa.SOPA, sopa.tam, sopa.tam), sopa.tam, sopa.tam), sopa.tam, sopa.tam, 0);					//Se invierte el numero de filas y columnas
+	//ImprimirMatriz(voltear(transponer(sopa.SOPA, sopa.tam, sopa.tam), sopa.tam, sopa.tam), sopa.tam, sopa.tam, 0);					//Se invierte el numero de filas y columnas
 
 
+/*------------------Se buscan las palabras----------------------*/
+	busquedaPalabras(sopa.SOPA, (transponer(sopa.SOPA, sopa.tam, sopa.tam)), voltear(sopa.SOPA, sopa.tam, sopa.tam),voltear(transponer(sopa.SOPA, sopa.tam, sopa.tam), sopa.tam, sopa.tam), sopa.tam, palabras);
 
 
 

@@ -27,4 +27,12 @@
       <Filter>Archivos de recursos</Filter>
     </CopyFileToFolders>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="palabras1.in">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="sopa1.in">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+  </ItemGroup>
 </Project>
