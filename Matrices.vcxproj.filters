@@ -34,5 +34,11 @@
     <None Include="sopa1.in">
       <Filter>Archivos de recursos</Filter>
     </None>
+    <None Include="palabras2.in">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="sopa2.in">
+      <Filter>Archivos de recursos</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -2,12 +2,14 @@
 #include <string.h>
 #include <malloc.h>
 
+
 char palabrasE[100][100];
 int cordenadas[500];
 
+
 typedef struct {
 	char* SOPA;		//La Sopa
-	int tam;		//Tamaño de Matriz NxN
+	int tam;		//TamaÃ±o de Matriz NxN
 } SopaDeLetras;
 
 typedef struct {
@@ -15,36 +17,36 @@ typedef struct {
 	int num;		//Numero de Palabras
 } Palabras;
 
-//char* generarMatriz(int M, int N)
-//{
-//	char* Matriz = malloc(M * N * sizeof(char));					//Reservamos M*N porque es un array de 1 dim
-//
-//	for (int i = 0; i < M; i++)
-//	{
-//		for (int j = 0; j < N; j++)
-//		{
-//			Matriz[i * N + j] = (char)(i + (j + 1) * (i + 1) + '0');//Se suma '0' para el casting de int to char
-//																	//Se itera con i*N porque ese sera el movimiento entre las columnas
-//		}
-//	}
-//}
+char* generarMatriz(int M, int N)
+{
+	char* Matriz = malloc(M * N * sizeof(char));					//Reservamos M*N porque es un array de 1 dim
 
-//void ImprimirMatriz(char* Matriz, int M, int N, int ImprimirPosiciones)
-//{
-//	for (int i = 0; i < M; i++)
-//	{
-//		for (int j = 0; j < N; j++)
-//		{
-//			if (ImprimirPosiciones == 1)
-//				printf("[%d][%d] = %c\t", i, j, Matriz[i * N + j]);
-//			else
-//				printf("%c ", Matriz[i * N + j]);
-//
-//			if (j + 1 == N)
-//				printf("\n");
-//		}
-//	}
-//}
+	for (int i = 0; i < M; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			Matriz[i * N + j] = (char)(i + (j + 1) * (i + 1) + '0');//Se suma '0' para el casting de int to char
+																	//Se itera con i*N porque ese sera el movimiento entre las columnas
+		}
+	}
+}
+
+void ImprimirMatriz(char* Matriz, int M, int N, int ImprimirPosiciones)
+{
+	for (int i = 0; i < M; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			if (ImprimirPosiciones == 1)
+				printf("[%d][%d] = %c\t", i, j, Matriz[i * N + j]);
+			else
+				printf("%c ", Matriz[i * N + j]);
+
+			if (j + 1 == N)
+				printf("\n");
+		}
+	}
+}
 
 char* transponer(char* MatrizOriginal, int Fila, int Columna)
 {
@@ -65,7 +67,6 @@ char* voltear(char* MatrizOriginal, int Fila, int Columna)
 {
 	char* MatrizVolteada = malloc(Fila * Columna * sizeof(char));
 	int posicion;
-
 	for (int i = 0; i < Fila; i++)
 	{
 		for (int j = 0; j < Columna; j++)
@@ -81,11 +82,11 @@ char* voltear(char* MatrizOriginal, int Fila, int Columna)
 SopaDeLetras leerSopaDeArchivo()
 {
 	//Variables a usar
-	char	tamanio_char[10],										//Lee la primera linea con el tamaño de matriz
+	char	tamanio_char[10],										//Lee la primera linea con el tamaÃ±o de matriz
 			caracter;												//Iterador de caracter leido
-	int		posCaracter = 0;										//Iterador para la posición de la matriz a guardar
+	int		posCaracter = 0;										//Iterador para la posiciÃ³n de la matriz a guardar
 	SopaDeLetras sopa;												//Estructura donde se guardara la Sopa
-	FILE* sopaPtr = fopen("sopa2.in", "r");							//Abrimos el archivo sopa.in con un Puntero FILE*
+	FILE* sopaPtr = fopen("sopa1.in", "r");							//Abrimos el archivo sopa.in con un Puntero FILE*
 
 	if (sopaPtr == NULL) {											//El archivo se pudo leer?
 		printf("Problema al leer archivo.");
@@ -94,8 +95,8 @@ SopaDeLetras leerSopaDeArchivo()
 		return sopa;
 	}
 
-	//Obtenemos el tamaño de la sopa leyendo la primera fila
-	fgets(tamanio_char, 10, sopaPtr);								//Se lee el tamaño de matriz primera linea archivo
+	//Obtenemos el tamaÃ±o de la sopa leyendo la primera fila
+	fgets(tamanio_char, 10, sopaPtr);								//Se lee el tamaÃ±o de matriz primera linea archivo
 	sopa.tam = atoi(tamanio_char);									//Convierte la primera linea de chars en un entero
 
 	//Creamos la matriz
@@ -123,11 +124,11 @@ SopaDeLetras leerSopaDeArchivo()
 Palabras leerPalabrasDeArchivo()
 {
 	//Variables a usar
-	char	tamanio_char[10],										//Lee la primera linea con el tamaño de matriz
+	char	tamanio_char[10],										//Lee la primera linea con el tamaÃ±o de matriz
 		caracter;												//Iterador de caracter leido
-	int		posCaracter = 0;										//Iterador para la posición de la matriz a guardar
+	int		posCaracter = 0;										//Iterador para la posiciÃ³n de la matriz a guardar
 	Palabras palabras;												//Estructura donde se guardara la Sopa
-	FILE* palabrasPtr = fopen("palabras2.in", "r");							//Abrimos el archivo sopa.in con un Puntero FILE*
+	FILE* palabrasPtr = fopen("palabras1.in", "r");							//Abrimos el archivo sopa.in con un Puntero FILE*
 
 	if (palabrasPtr == NULL) {											//El archivo se pudo leer?
 		printf("Problema al leer archivo.");
@@ -136,12 +137,12 @@ Palabras leerPalabrasDeArchivo()
 		return palabras;
 	}
 
-	//Obtenemos el tamaño de la sopa leyendo la primera fila
-	fgets(tamanio_char, 10, palabrasPtr);								//Se lee el tamaño de matriz primera linea archivo
+	//Obtenemos el tamaÃ±o de la sopa leyendo la primera fila
+	fgets(tamanio_char, 10, palabrasPtr);								//Se lee el tamaÃ±o de matriz primera linea archivo
 	palabras.num = atoi(tamanio_char);									//Convierte la primera linea de chars en un entero
 
 	//Creamos la matriz
-	palabras.palabras = malloc(palabras.num * 25 * sizeof(char));		//Reservamos el espacio
+	palabras.palabras = malloc(palabras.num * 25 * sizeof(char*));		//Reservamos el espacio
 
 			
 	int i = 1;
@@ -154,8 +155,6 @@ Palabras leerPalabrasDeArchivo()
 			if (caracter == '\n') {
 				while (posCaracter < 25 * i)
 				{
-					
-					palabras.palabras[posCaracter] = ' ';
 					posCaracter++;
 				}
 				i++;
@@ -168,8 +167,6 @@ Palabras leerPalabrasDeArchivo()
 
 		}
 	}
-	palabras.palabras[posCaracter] = ' ';
-	palabras.palabras[posCaracter + 1] = '\0';
 
 	fclose(palabrasPtr);												//Cierre de archivo
 
@@ -177,37 +174,19 @@ Palabras leerPalabrasDeArchivo()
 }
 
 char* palabrasBuscar(Palabras palabras, int PalabraNumero) {
-	printf("pene \n");
 	int tamanio = 0;
 	int tamanioChar = 0;
-	//char* combinaciones = malloc(2529 * sizeof(char*));
-	//printf("pene1 %s\n", combinaciones);
-	char* palabraI = malloc(25 * sizeof(char));
-	printf("pene2 %s\n", palabraI);
-	char* palabraF = malloc(25 * sizeof(char));
-	printf("pene3 %s\n", palabraF);
+	char* combinaciones = malloc(4000 * sizeof(char*));
+	char* palabraI = malloc(25 * sizeof(char*));
+	char* palabraF = malloc(25 * sizeof(char*));
 	int largo = 0;
 	int letrasMenos = 1;
-	printf("pene4 \n");
-	while (palabras.palabras[25 * PalabraNumero + tamanio] != ' ') { // \0 Í
+	while (palabras.palabras[25 * PalabraNumero + tamanio] != '\0') { // \0
 		palabraI[tamanio] = palabras.palabras[25 * PalabraNumero + tamanio];
 		palabraF[tamanio] = palabras.palabras[25 * PalabraNumero + tamanio];
 		tamanio++;
 		largo = tamanio;
 	}
-	printf("pene5 \n");
-	
-	int suma = 0;
-	for (int i = 0; i < tamanio; i++)
-	{
-		suma = suma + (i + 1) * (largo - i);
-		suma = suma + (i - 1);
-	}
-	printf("\n\n%d\n\n", suma);
-	
-	char* combinaciones = malloc(suma * sizeof(char));
-	
-	
 	for (int i = 0; i < largo; i++)
 	{
 		combinaciones[i] = palabraI[i];
@@ -215,12 +194,12 @@ char* palabrasBuscar(Palabras palabras, int PalabraNumero) {
 			combinaciones[i + 1] = '\0';
 		}
 	}
-	printf("pene6 \n");
-
-	printf("pene7 \n");
-	for (int i = 0; i < tamanio - 2 ; i++) {
+	if (tamanio%2 == 1){
+		tamanio++;
+	}
+	for (int i = 0; i < tamanio/2 ; i++) {
 		for (int k = 0; k < letrasMenos + 1; k++) {
-			strcpy(palabraF, "                        ");
+			strcpy(palabraF, "                          ");
 			strcat(combinaciones, "-");
 
 			for (int j = 0; j < largo - letrasMenos; j++) {
@@ -234,29 +213,8 @@ char* palabrasBuscar(Palabras palabras, int PalabraNumero) {
 		}
 		letrasMenos++;
 	}
-	printf("pene8 %s\n", combinaciones);
-
-	//char* combinacionesF = malloc(strlen(combinaciones) * sizeof(char*));
-	//
-	//printf("pene88 %d\n", strlen(combinaciones));
-
-	//for (int i = 0; i < strlen(combinaciones); i++)
-	//{
-	//	combinacionesF[i] = combinaciones[i];
-	//	printf("%d\n", i);
-	//	if (i == strlen(combinaciones) - 1) {
-	//		combinacionesF[i + 1] = '\0';
-	//	}
-	//}
-	//printf("pene8 %s\n", combinacionesF);
-	//printf("pene9 \n");
-	//free(combinaciones);
-	//combinaciones = NULL;
-	free(palabraF);
-	palabraF = NULL;
 	free(palabraI);
-	palabraI = NULL;
-	printf("penee \n");
+	free(palabraF);
 	return combinaciones;
 }
 
@@ -274,8 +232,7 @@ int numeroCombinaciones(char* Combinaciones) {
 }
 
 char* palabra(char* Combinaciones, int NumeroBuscada) {
-	char* palabraI = malloc(25 * sizeof(char));
-	char* palabraF = malloc(25 * sizeof(char));
+	char* palabraI = malloc(25 * sizeof(char*));
 	int contador = 0;
 	int i = 0;
 	if (NumeroBuscada == 0){
@@ -301,7 +258,6 @@ char* palabra(char* Combinaciones, int NumeroBuscada) {
 		}
 		palabraI[contador] = '\0';
 	}
-
 	return palabraI;
 }
 
@@ -335,14 +291,10 @@ void busquedaPalabras(char* matrizNormal, char * matrizTranspuesta, char* matriz
 	int fila;
 
 	for (int k = 0; k < numeroPalabras; k++) {
-		printf("hola1  %d\n", numeroPalabras);
 		combinaciones = palabrasBuscar(palabras, k);
-		printf("hola2");
 		cantidadCombinaciones = numeroCombinaciones(combinaciones);
-		printf("hola3\n");
 		for (int i = 0; i < cantidadCombinaciones; i++)
 		{
-			printf("hola4\n");
 			palabraBuscada = palabra(combinaciones, i);
 			if (strstr(matrizNormal, palabraBuscada) != NULL) {
 				encontrada = strstr(matrizNormal, palabraBuscada);
@@ -439,9 +391,7 @@ void main()
 	busquedaPalabras(sopa.SOPA, (transponer(sopa.SOPA, sopa.tam, sopa.tam)), voltear(sopa.SOPA, sopa.tam, sopa.tam),voltear(transponer(sopa.SOPA, sopa.tam, sopa.tam), sopa.tam, sopa.tam), sopa.tam, palabras);
 
 
-/*------------------Se guardan las palabras----------------------*/
-	//escribirDatos(palabras, );
-
-
-
 }
+
+
+

@@ -152,7 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="palabras1.in" />
+    <None Include="palabras2.in" />
     <None Include="sopa1.in" />
+    <None Include="sopa2.in" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
